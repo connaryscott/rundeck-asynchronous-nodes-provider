@@ -9,21 +9,19 @@ import com.dtolabs.rundeck.core.resources.format.ResourceXMLFormatParser;
 import com.dtolabs.rundeck.core.plugins.configuration.ConfigurationException;
 import com.dtolabs.rundeck.core.common.INodeSet;
 
-
 public class XMLResourceModelSource implements ResourceModelSource {
 
    private AsynchronousWorker asynchronousWorker;
    public XMLResourceModelSource(final Properties configuration) {
 
-      this.asynchronousWorker = new AsynchronousWorker();
+
+      String resourcesUrl = configuration.getProperty(XMLResourceModelSourceFactory.RESOURCES_URL_KEY);
+      int refreshInterval = Integer.parseInt(configuration.getProperty(XMLResourceModelSourceFactory.REFRESH_INTERVAL_KEY));
+      this.asynchronousWorker = new AsynchronousWorker(resourcesUrl, refreshInterval);
       this.asynchronousWorker.initialize();
    }
 
    public synchronized INodeSet getNodes() throws ResourceModelSourceException {
-
-  //ResourceXMLFormatParser rxfp = new ResourceXMLFormatParser();
-  // or InputStream not a file as we see here
-  //INodeSet iNodeSet = rxfp.parseDocument(new File(RESOURCES_XML));
 
       ResourceXMLFormatParser resourceFormatParser = new ResourceXMLFormatParser();
 

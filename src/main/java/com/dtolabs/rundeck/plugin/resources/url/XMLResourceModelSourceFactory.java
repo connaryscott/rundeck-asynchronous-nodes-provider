@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
-@Plugin(name="genericurlprovider", service="ResourceModelSource")
+@Plugin(name="cached-resources-xml", service="ResourceModelSource")
 public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory, Describable {
 
-    public static final String PROVIDER_NAME = "genericurlprovider";
+    public static final String PROVIDER_NAME = "cached-resources-xml";
     public static final String RESOURCES_URL_KEY = "resourcesUrlKey";
-    public static final String RESOURCES_URL = "http://localhost/resources.xml";
+    public static final String RESOURCES_URL_DEFAULT = "http://localhost/resources.xml";
+    public static final String REFRESH_INTERVAL_KEY = "refreshIntervalKey";
+    public static final int REFRESH_INTERVAL_DEFAULT = 30;
 
     private Framework framework;
 
@@ -27,13 +29,14 @@ public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory
 
     public ResourceModelSource createResourceModelSource(final Properties properties) throws ConfigurationException {
         final XMLResourceModelSource xmlResourceModelSource = new XMLResourceModelSource(properties);
-        //ec2ResourceModelSource.validate();
+        xmlResourceModelSource.validate();
         return xmlResourceModelSource;
     }
  
 
     static {
-        descriptionProperties.add(PropertyUtil.string(RESOURCES_URL_KEY, "resources url", "source resource url", false, RESOURCES_URL));
+        descriptionProperties.add(PropertyUtil.string(RESOURCES_URL_KEY, "resources url", "source resource url", false, RESOURCES_URL_DEFAULT));
+        descriptionProperties.add(PropertyUtil.integer(REFRESH_INTERVAL_KEY, "Refresh Interval", "Minimum time in seconds between url requests (default is " + Integer.toString(REFRESH_INTERVAL_DEFAULT) + ")", false,  Integer.toString(REFRESH_INTERVAL_DEFAULT)));
     }
 
 
@@ -62,4 +65,5 @@ public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory
     public Description getDescription() {
         return DESC;
     }
+
 }

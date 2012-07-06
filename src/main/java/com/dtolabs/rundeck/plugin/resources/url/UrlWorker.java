@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class UrlWorker  implements Callable<String> {
 
     public String call() throws Exception {
-       System.out.println("url: " + RESOURCES_URL);
+       System.out.println("url: " + this.resourcesUrl);
        this.doWork();
        return resourcesXml;
     }
@@ -42,12 +42,15 @@ public class UrlWorker  implements Callable<String> {
        done = b;
     }
 
-    // test url, try a puppet url here
-    public static String RESOURCES_URL = "http://localhost/resources.xml";
-    // default wait time in between url downloads
-    public static int WAIT_TIME_URL = 30;
+    // TODO, take this from  defaults and overridden configuration
+    // url, try a puppet url here
+    private String resourcesUrl;
+    // wait time in between url downloads
+    private int refreshInterval;
     
-    public UrlWorker() {
+    public UrlWorker(String resourcesUrl, int refreshInterval) {
+       this.resourcesUrl = resourcesUrl;
+       this.refreshInterval = refreshInterval;
     }
 
     private volatile String resourcesXml;
@@ -97,7 +100,7 @@ public class UrlWorker  implements Callable<String> {
    
              StringBuffer sb = new StringBuffer();
              try {
-                url = new URL(RESOURCES_URL);
+                url = new URL(this.resourcesUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
@@ -116,12 +119,13 @@ public class UrlWorker  implements Callable<String> {
              }
    
              // set resources string, referesh to true, and notify calling thread 
+             // TODO, need to validate this xml as resourcesxml
              setResourcesXml(sb.toString());
              setDataRefreshed(true, true);
        
              // polling loop wait time
              try {
-                Thread.sleep(WAIT_TIME_URL*1000);
+                Thread.sleep(this.refreshInterval*1000);
              } catch (InterruptedException e) {
                 e.printStackTrace();   
                 throw new Exception("caught and threw InterruptedException");
@@ -133,7 +137,7 @@ public class UrlWorker  implements Callable<String> {
 
     // take a test drive here, otherwise unused
     public static void main(String[] args) throws Exception {
-        UrlWorker worker = new UrlWorker();
+        UrlWorker worker = new UrlWorker("http://localhost/resources.xml", 30);
         worker.doWork();
         System.out.println(worker.getResourcesXml().get());
         System.out.println("... try to do something while the work is being done....");
