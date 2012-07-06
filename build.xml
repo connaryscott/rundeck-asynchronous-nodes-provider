@@ -2,33 +2,36 @@
 
   <property name="project.name" value="rundeck-url-nodes-plugin"/>
 
-  <property name="manifest.mf" value="src/main/resources/MANIFEST.MF"/>
+  <property name="manifest.mf" value="build/MANIFEST.MF"/>
   <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.XMLResourceModelSourceFactory"/>
   <property name="rundeck.plugin.version" value="1.0"/>
   <property name="rundeck.plugin.file.version" value="1.0"/>
 
   <property name="src" location="src"/>
 
-  <property name="build" location="target"/>
+  <property name="build" location="build"/>
+  <property name="target" location="target"/>
   <property name="dist" location="dist"/>
 
   <property name="rundeck.server.serverDir" location="/var/lib/rundeck"/>
 
  <target name="clean">
     <delete dir="${build}"/>
+    <delete dir="${target}"/>
     <delete dir="${dist}"/>
  </target> 
 
  <target name="init" depends="clean"> 
     <mkdir dir="${build}"/>
+    <mkdir dir="${target}"/>
     <mkdir dir="${dist}"/>
  </target>
 
  <target name="compile" depends="init"
         description="compile the source " >
-    <javac srcdir="${src}" destdir="${build}">
+    <javac srcdir="${src}" destdir="${target}">
        <classpath>
-          <pathelement path="${build}"/>
+          <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
           </fileset>
@@ -39,7 +42,7 @@
  <target name="run-async" depends="compile"> 
     <java classname="com.dtolabs.rundeck.plugin.resources.url.AsynchronousWorker"> 
        <classpath> 
-          <pathelement path="${build}"/>
+          <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
           </fileset>
@@ -49,7 +52,7 @@
  <target name="run-sync" depends="compile"> 
     <java classname="com.dtolabs.rundeck.plugin.resources.url.UrlWorker"> 
        <classpath>
-          <pathelement path="${build}"/>
+          <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
           </fileset>
@@ -59,7 +62,7 @@
 
   
   <target name="generate-manifest">
-      <manifest file="src/main/resources/MANIFEST.MF">
+      <manifest file="${manifest.mf}">
          <attribute name="Rundeck-Plugin-Version" value="${rundeck.plugin.version}"/>
          <attribute name="Rundeck-Plugin-Archive" value="true"/>
          <attribute name="Rundeck-Plugin-File-Version" value="rundeck.plugin.file.version}"/>
@@ -68,7 +71,7 @@
   </target> 
   
    <target name="jar" depends="run-async,generate-manifest"> 
-      <jar basedir="${build}" destfile="${dist}/${project.name}.jar" manifest="${manifest.mf}"/>
+      <jar basedir="${target}" destfile="${dist}/${project.name}.jar" manifest="${manifest.mf}"/>
    </target>
 
 </project> 
