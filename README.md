@@ -6,10 +6,12 @@ A generic resource model source provider with caching capability
 To Build:
 =====
 
+requires ant
+
 plugin builds against jars within the ${RUNDECK_SERVER_DIR}/exp/webapp/WEB-INF/lib directory
 which assumes one of the following:
 
-/var/lib/rundeck exists
+RUNDECK_SERVER_DIR=/var/lib/rundeck and it exists
 
     ant jar
 
