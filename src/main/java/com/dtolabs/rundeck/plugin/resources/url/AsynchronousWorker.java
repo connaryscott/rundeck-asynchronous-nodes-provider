@@ -3,9 +3,11 @@ package com.dtolabs.rundeck.plugin.resources.url;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.apache.log4j.Logger;
 
 
 public class AsynchronousWorker {
+    public static final Logger logger = Logger.getLogger(AsynchronousWorker.class);
     private boolean initialized = false;
 
     private String resourcesUrl;
@@ -27,7 +29,8 @@ public class AsynchronousWorker {
            return;
         }
  
-        System.out.println("Start Work"  + new java.util.Date());
+        //System.out.println("Start Work"  + new java.util.Date());
+        logger.info("Start Work"  + new java.util.Date());
         ExecutorService es = Executors.newFixedThreadPool(1);
 
         Future<String> futureResult = null;
@@ -35,21 +38,20 @@ public class AsynchronousWorker {
         worker = new UrlWorker(this.resourcesUrl, this.refreshInterval);
         Future<String> future = es.submit(worker);
 
-        System.out.println("... sleep then try to do something while the work is being done....");
-        System.out.println("future done 1 ?: " + future.isDone()); 
-        System.out.println("refresh 1 ?: " + worker.isDataRefreshed()); 
+        logger.info("future done ?: " + future.isDone()); 
+        logger.info("refresh 1 ?: " + worker.isDataRefreshed()); 
 
         // first time we wait until data refresh has occurs
         synchronized (worker) {
            while (!worker.isDataRefreshed()) {
               try {
-                System.out.println("wait() refresh 2 ?: " + worker.isDataRefreshed()); 
+                logger.info("wait() refresh 2 ?: " + worker.isDataRefreshed()); 
                 worker.wait();
               } catch (InterruptedException e) { 
                 e.printStackTrace();
-                System.out.println("caught InterruptedException"); 
+                logger.error("caught InterruptedException"); 
               } finally {
-                System.out.println("wait() refresh 2.5 ?: " + worker.isDataRefreshed()); 
+                logger.info("wait() refresh 2.5 ?: " + worker.isDataRefreshed()); 
               }
            }
         }

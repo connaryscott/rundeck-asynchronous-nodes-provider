@@ -6,12 +6,16 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import org.apache.log4j.Logger;
 
 
 public class UrlWorker  implements Callable<String> {
 
+    public static final Logger logger = Logger.getLogger(UrlWorker.class);
+
     public String call() throws Exception {
-       System.out.println("url: " + this.resourcesUrl);
+       //System.out.println("url: " + this.resourcesUrl);
+       logger.info("resourcesUrl: " + this.resourcesUrl);
        this.doWork();
        return resourcesXml;
     }
@@ -95,6 +99,7 @@ public class UrlWorker  implements Callable<String> {
 
           while (true) {
 
+             logger.info("polling resourcesUrl: " + this.resourcesUrl);
              // reset referesh to false and do not notify calling thread 
              setDataRefreshed(false, false);
    
@@ -124,6 +129,7 @@ public class UrlWorker  implements Callable<String> {
              setDataRefreshed(true, true);
        
              // polling loop wait time
+             logger.info("sleeping for " + this.refreshInterval + " + seconds");
              try {
                 Thread.sleep(this.refreshInterval*1000);
              } catch (InterruptedException e) {

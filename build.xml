@@ -34,6 +34,7 @@
           <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
+             <include name="log4j-*.jar"/>
           </fileset>
        </classpath>
     </javac> 
@@ -45,6 +46,7 @@
           <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
+             <include name="log4j-*.jar"/>
           </fileset>
        </classpath> 
     </java> 
@@ -55,6 +57,7 @@
           <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
+             <include name="log4j-*.jar"/>
           </fileset>
        </classpath>
     </java> 
