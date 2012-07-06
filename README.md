@@ -10,6 +10,7 @@ plugin builds against jars within the ${RUNDECK_SERVER_DIR}/exp/webapp/WEB-INF/l
 which assumes one of the following:
 
 /var/lib/rundeck exists
+
     ant jar
 
 -or-
