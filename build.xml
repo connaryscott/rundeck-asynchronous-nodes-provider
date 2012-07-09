@@ -1,9 +1,12 @@
-<project name="asynchronous-nodes-provider" default="compile" basedir=".">
+<project name="asynchronous-url-nodes-provider" default="compile" basedir=".">
 
-  <property name="project.name" value="asynchronous-nodes-provider"/>
+  <!-- location of latest rundeck war where we get necessary build and runtime jars for this plugin -->
+  <property name="rundeck.zip.url" value="http://build.rundeck.org/job/rundeck-master/lastSuccessfulBuild/artifact/rundeckapp/target/*zip*/target.zip"/>
+
+  <property name="project.name" value="asynchronous-url-nodes-provider"/>
 
   <property name="manifest.mf" value="build/MANIFEST.MF"/>
-  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.AsynchronousResourceModelSourceFactory"/>
+  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.XMLResourceModelSourceFactory"/>
   <property name="rundeck.plugin.version" value="1.0"/>
   <property name="rundeck.plugin.file.version" value="1.0"/>
 
@@ -15,20 +18,6 @@
 
   <property environment="env"/>
 
- <target name="properties"> 
-    <echo>checking environment  RUNDECK_SERVER_DIR or directory /var/lib/rundeck</echo>
-    <condition property="rundeck.server.serverDir" value="${env.RUNDECK_SERVER_DIR}" else="/var/lib/rundeck">
-       <isset property="env.RUNDECK_SERVER_DIR"/>
-    </condition> 
-
-    <fail message="directory ${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib does not appear to exist">
-       <condition>
-          <not>
-             <available file="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib" type="dir"/>
-          </not>
-       </condition>
-    </fail> 
- </target> 
 
  <target name="clean">
     <delete dir="${build}"/>
@@ -36,18 +25,38 @@
     <delete dir="${dist}"/>
  </target> 
 
- <target name="init" depends="properties,clean"> 
+ <target name="init"> 
     <mkdir dir="${build}"/>
     <mkdir dir="${target}"/>
     <mkdir dir="${dist}"/>
  </target>
 
- <target name="compile" depends="init"
+ <target name="get-rundeck-war" depends="init"> 
+    <get skipexisting="true" src="${rundeck.zip.url}" dest="${build}/rundeck.zip"/>
+    <unzip src="${build}/rundeck.zip" dest="${build}">
+       <patternset>
+          <include name="target/rundeck-*.war"/>
+       </patternset>
+    </unzip>
+
+    <unjar dest="${build}/target">
+       <fileset dir="${build}/target">
+          <include name="rundeck-*.war"/>
+       </fileset> 
+       <patternset>
+          <include name="WEB-INF/lib/rundeck-core-*.jar"/>
+          <include name="WEB-INF/lib/log4j-*.jar"/>
+       </patternset>
+    </unjar> 
+ </target>
+
+
+ <target name="compile" depends="get-rundeck-war"
         description="compile the source " >
     <javac includeantruntime="false" srcdir="${src}" destdir="${target}">
        <classpath>
           <pathelement path="${target}"/>
-          <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
+          <fileset dir="${build}/target/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
              <include name="log4j-*.jar"/>
           </fileset>
@@ -59,7 +68,7 @@
     <java classname="com.dtolabs.rundeck.plugin.resources.url.AsynchronousWorker"> 
        <classpath> 
           <pathelement path="${target}"/>
-          <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
+          <fileset dir="${build}/target/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
              <include name="log4j-*.jar"/>
           </fileset>
@@ -70,7 +79,7 @@
     <java classname="com.dtolabs.rundeck.plugin.resources.url.UrlWorker"> 
        <classpath>
           <pathelement path="${target}"/>
-          <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
+          <fileset dir="${build}/target/WEB-INF/lib">
              <include name="rundeck-core-*.jar"/>
              <include name="log4j-*.jar"/>
           </fileset>
@@ -88,8 +97,8 @@
       </manifest> 
   </target> 
   
-   <target name="jar" depends="run-async,generate-manifest"> 
-      <jar basedir="${target}" destfile="${dist}/${project.name}-${rundeck.plugin.file.version}.jar" manifest="${manifest.mf}"/>
+   <target name="jar" depends="compile,generate-manifest"> 
+      <jar basedir="${target}" destfile="${dist}/${project.name}.jar" manifest="${manifest.mf}"/>
    </target>
 
 </project> 
