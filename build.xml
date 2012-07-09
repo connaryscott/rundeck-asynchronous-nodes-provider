@@ -98,7 +98,7 @@
   </target> 
   
    <target name="jar" depends="compile,generate-manifest"> 
-      <jar basedir="${target}" destfile="${dist}/${project.name}.jar" manifest="${manifest.mf}"/>
+      <jar basedir="${target}" destfile="${dist}/${project.name}-${rundeck.plugin.file.version}.jar" manifest="${manifest.mf}"/>
    </target>
 
 </project> 
