@@ -46,9 +46,9 @@ public class UrlWorker  implements Callable<String> {
        done = b;
     }
 
-    // TODO, take this from  defaults and overridden configuration
-    // url, try a puppet url here
+    // some url that takes "forever and a day" to respond, such as that url used with the puppet/rundeck plugin. 
     private String resourcesUrl;
+
     // wait time in between url downloads
     private int refreshInterval;
     
@@ -57,14 +57,20 @@ public class UrlWorker  implements Callable<String> {
        this.refreshInterval = refreshInterval;
     }
 
+    // the currently stored resourcesXml
     private volatile String resourcesXml;
     public void setResourcesXml(String xml) {
        resourcesXml = xml;
     }
+
+    // provide a method to get what we currently have in memory, it may not be authoritative, but is immediately available.
     public String getVolatileResourcesXml() {
        return resourcesXml;
     }
 
+    // we really are not using this since we do not require waiting on a future event returning the data since this respresents a single background thread which continually runs.
+    // Instead, we synchronize on the isDataRefreshed() method, which during initialization, allows us to get synchronous behavior.
+    // After that, we depend on asynchronous behavior thru getVolatileResourcesXml().
     public Future<String> getResourcesXml() {
        return new Future<String>() { 
 
@@ -92,6 +98,8 @@ public class UrlWorker  implements Callable<String> {
     }
 
     
+    // this is the worker thread which periodically gets new resourcesXml data
+    // we use setDataRefreshed() method to notify the watching thread when new data comes in and is useful for synchronous behavior when needed.
     public void doWork() throws Exception {
 
           URL url = null;
@@ -123,8 +131,7 @@ public class UrlWorker  implements Callable<String> {
                 throw new Exception("caught and threw IOException");
              }
    
-             // set resources string, referesh to true, and notify calling thread 
-             // TODO, need to validate this xml as resourcesxml
+             // set resourcesXml string, referesh to true, and notify calling thread 
              setResourcesXml(sb.toString());
              setDataRefreshed(true, true);
        

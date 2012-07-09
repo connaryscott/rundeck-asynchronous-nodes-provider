@@ -44,7 +44,7 @@
 
  <target name="compile" depends="init"
         description="compile the source " >
-    <javac srcdir="${src}" destdir="${target}">
+    <javac includeantruntime="false" srcdir="${src}" destdir="${target}">
        <classpath>
           <pathelement path="${target}"/>
           <fileset dir="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib">
