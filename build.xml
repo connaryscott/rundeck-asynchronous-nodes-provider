@@ -83,7 +83,7 @@
       <manifest file="${manifest.mf}">
          <attribute name="Rundeck-Plugin-Version" value="${rundeck.plugin.version}"/>
          <attribute name="Rundeck-Plugin-Archive" value="true"/>
-         <attribute name="Rundeck-Plugin-File-Version" value="rundeck.plugin.file.version}"/>
+         <attribute name="Rundeck-Plugin-File-Version" value="${rundeck.plugin.file.version}"/>
          <attribute name="Rundeck-Plugin-Classnames" value="${manifest.classes}"/>
       </manifest> 
   </target> 
