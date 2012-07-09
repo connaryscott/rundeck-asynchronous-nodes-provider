@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
-@Plugin(name="cached-resources-xml", service="ResourceModelSource")
-public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory, Describable {
+@Plugin(name="asynchronous-nodes-provider", service="ResourceModelSource")
+public class AsynchronousResourceModelSourceFactory implements ResourceModelSourceFactory, Describable {
 
-    public static final String PROVIDER_NAME = "cached-resources-xml";
+    public static final String PROVIDER_NAME = "asynchronous-nodes-provider";
     public static final String RESOURCES_URL_KEY = "resourcesUrlKey";
     public static final String RESOURCES_URL_DEFAULT = "http://localhost/resources.xml";
     public static final String REFRESH_INTERVAL_KEY = "refreshIntervalKey";
@@ -23,7 +23,7 @@ public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory
 
     private static List<Property> descriptionProperties = new ArrayList<Property>();
 
-    public XMLResourceModelSourceFactory(final Framework framework) {
+    public AsynchronousResourceModelSourceFactory(final Framework framework) {
         this.framework = framework;
     }
 
@@ -46,11 +46,11 @@ public class XMLResourceModelSourceFactory implements ResourceModelSourceFactory
         }
 
         public String getTitle() {
-            return "generic url xml resources provider";
+            return "asynchronous resources provider";
         }
 
         public String getDescription() {
-            return "produce cached resources xml data";
+            return "produces cached resources xml data from an upstream url";
         }
 
         public List<Property> getProperties() {

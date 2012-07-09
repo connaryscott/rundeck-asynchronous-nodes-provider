@@ -1,9 +1,9 @@
-<project name="rundeck-url-nodes-plugin" default="compile" basedir=".">
+<project name="asynchronous-nodes-provider" default="compile" basedir=".">
 
-  <property name="project.name" value="rundeck-url-nodes-plugin"/>
+  <property name="project.name" value="asynchronous-nodes-provider"/>
 
   <property name="manifest.mf" value="build/MANIFEST.MF"/>
-  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.XMLResourceModelSourceFactory"/>
+  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.AsynchronousResourceModelSourceFactory"/>
   <property name="rundeck.plugin.version" value="1.0"/>
   <property name="rundeck.plugin.file.version" value="1.0"/>
 
@@ -89,7 +89,7 @@
   </target> 
   
    <target name="jar" depends="run-async,generate-manifest"> 
-      <jar basedir="${target}" destfile="${dist}/${project.name}.jar" manifest="${manifest.mf}"/>
+      <jar basedir="${target}" destfile="${dist}/${project.name}-${rundeck.plugin.file.version}.jar" manifest="${manifest.mf}"/>
    </target>
 
 </project> 
