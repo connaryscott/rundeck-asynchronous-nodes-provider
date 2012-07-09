@@ -13,7 +13,22 @@
   <property name="target" location="target"/>
   <property name="dist" location="dist"/>
 
-  <property name="rundeck.server.serverDir" location="/var/lib/rundeck"/>
+  <property environment="env"/>
+
+ <target name="properties"> 
+    <echo>checking environment  RUNDECK_SERVER_DIR or directory /var/lib/rundeck</echo>
+    <condition property="rundeck.server.serverDir" value="${env.RUNDECK_SERVER_DIR}" else="/var/lib/rundeck">
+       <isset property="env.RUNDECK_SERVER_DIR"/>
+    </condition> 
+
+    <fail message="directory ${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib does not appear to exist">
+       <condition>
+          <not>
+             <available file="${rundeck.server.serverDir}/exp/webapp/WEB-INF/lib" type="dir"/>
+          </not>
+       </condition>
+    </fail> 
+ </target> 
 
  <target name="clean">
     <delete dir="${build}"/>
@@ -21,7 +36,7 @@
     <delete dir="${dist}"/>
  </target> 
 
- <target name="init" depends="clean"> 
+ <target name="init" depends="properties,clean"> 
     <mkdir dir="${build}"/>
     <mkdir dir="${target}"/>
     <mkdir dir="${dist}"/>
