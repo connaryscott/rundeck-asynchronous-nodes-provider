@@ -6,7 +6,7 @@
   <property name="project.name" value="asynchronous-url-nodes-provider"/>
 
   <property name="manifest.mf" value="build/MANIFEST.MF"/>
-  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.XMLResourceModelSourceFactory"/>
+  <property name="manifest.classes" value="com.dtolabs.rundeck.plugin.resources.url.AsynchronousResourceModelSourceFactory"/>
   <property name="rundeck.plugin.version" value="1.0"/>
   <property name="rundeck.plugin.file.version" value="1.0"/>
 

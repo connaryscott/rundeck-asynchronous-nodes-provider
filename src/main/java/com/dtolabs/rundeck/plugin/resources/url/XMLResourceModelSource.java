@@ -15,8 +15,8 @@ public class XMLResourceModelSource implements ResourceModelSource {
    public XMLResourceModelSource(final Properties configuration) {
 
 
-      String resourcesUrl = configuration.getProperty(XMLResourceModelSourceFactory.RESOURCES_URL_KEY);
-      int refreshInterval = Integer.parseInt(configuration.getProperty(XMLResourceModelSourceFactory.REFRESH_INTERVAL_KEY));
+      String resourcesUrl = configuration.getProperty(AsynchronousResourceModelSourceFactory.RESOURCES_URL_KEY);
+      int refreshInterval = Integer.parseInt(configuration.getProperty(AsynchronousResourceModelSourceFactory.REFRESH_INTERVAL_KEY));
       this.asynchronousWorker = new AsynchronousWorker(resourcesUrl, refreshInterval);
       this.asynchronousWorker.initialize();
    }
