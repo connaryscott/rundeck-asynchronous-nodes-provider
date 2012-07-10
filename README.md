@@ -19,3 +19,9 @@ copy dist/asynchronous-url-nodes-provider-<VERSION>.jar to the Rundeck Server Ex
 
 and restart Rundeck.
 
+To Configure the Rundeck Plugin 
+=====
+
+[Add the Resources Provider](https://github.com/connaryscott/rundeck-asynchronous-nodes-provider/blob/master/doc/addAsynchronousResourcesProvider.jpg)
+
+[Configure the Resources Provider](https://github.com/connaryscott/rundeck-asynchronous-nodes-provider/blob/master/doc/asynchronousResourcesProvider.jpg)
