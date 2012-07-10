@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
+import org.apache.log4j.Logger;
 
 @Plugin(name="asynchronous-nodes-provider", service="ResourceModelSource")
 public class AsynchronousResourceModelSourceFactory implements ResourceModelSourceFactory, Describable {
+
+    public static final Logger logger = Logger.getLogger(AsynchronousResourceModelSourceFactory.class);
 
     public static final String PROVIDER_NAME = "asynchronous-nodes-provider";
     public static final String RESOURCES_URL_KEY = "resourcesUrlKey";
@@ -27,10 +30,21 @@ public class AsynchronousResourceModelSourceFactory implements ResourceModelSour
         this.framework = framework;
     }
 
+    static private ResourceModelSource singleton;
+
     public ResourceModelSource createResourceModelSource(final Properties properties) throws ConfigurationException {
+        if (null == singleton) {
+        Util.logit("constructing factory singleton");
+        logger.debug("constructing factory singleton");
         final XMLResourceModelSource xmlResourceModelSource = new XMLResourceModelSource(properties);
         xmlResourceModelSource.validate();
+        this.singleton = xmlResourceModelSource;
         return xmlResourceModelSource;
+        } else {
+           Util.logit("factory singleton already exists");
+           logger.debug("factory singleton already exists");
+           return this.singleton;
+        }
     }
  
 
