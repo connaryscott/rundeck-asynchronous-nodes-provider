@@ -1,34 +1,20 @@
-rundeck-url-nodes-plugin
+rundeck-asynchronous-nodes-provider
 ========================
 
 A generic resource model source provider with caching capability
+NOTE:  this current implementation only supports xml backend (yaml not yet supported).
 
 To Build:
 =====
 
-requires ant
+./build.sh jar
 
-plugin builds against jars within the ${RUNDECK_SERVER_DIR}/exp/webapp/WEB-INF/lib directory
-which assumes one of the following:
-
-RUNDECK_SERVER_DIR=/var/lib/rundeck and it exists
-
-    ant jar
-
--or-
-
-define environment:  RUNDECK_SERVER_DIR 
-
-    export RUNDECK_SERVER_DIR=/path/to/rundeck/server/dir
-    ant jar
-
-
-Creates the  dist/rundeck-url-nodes-plugin.jar
+Creates the  dist/asynchronous-url-nodes-provider-<VERSION>.jar 
 
 To Install the Rundeck Plugin 
 =====
 
-copy dist/rundeck-url-nodes-plugin.jar to the Rundeck Server Extension Directory (such as /var/lib/rundeck/libext)
+copy dist/asynchronous-url-nodes-provider-<VERSION>.jar to the Rundeck Server Extension Directory (such as /var/lib/rundeck/libext)
 
 and restart Rundeck.
 
