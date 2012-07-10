@@ -13,16 +13,16 @@ import com.dtolabs.rundeck.core.plugins.configuration.ConfigurationException;
 import com.dtolabs.rundeck.core.common.INodeSet;
 import org.apache.log4j.Logger;
 
-public class XMLResourceModelSource implements ResourceModelSource {
+public class ResourceModelSourceProvider implements ResourceModelSource {
 
     private ResourceFormatParser resourceFormatParser; 
 
-    public static final Logger logger = Logger.getLogger(XMLResourceModelSource.class);
+    public static final Logger logger = Logger.getLogger(ResourceModelSourceProvider.class);
 
    private AsynchronousWorker asynchronousWorker;
-   public XMLResourceModelSource(Framework framework, final Properties configuration) throws UnsupportedFormatException {
+   public ResourceModelSourceProvider(Framework framework, final Properties configuration) throws UnsupportedFormatException {
 
-        logger.debug("constructing XMLResourceModelSource");
+        logger.debug("constructing ResourceModelSourceProvider");
 
       String resourcesFormat = configuration.getProperty(AsynchronousResourceModelSourceFactory.RESOURCES_FORMAT_KEY);
       String resourcesUrl = configuration.getProperty(AsynchronousResourceModelSourceFactory.RESOURCES_URL_KEY);
@@ -38,7 +38,7 @@ public class XMLResourceModelSource implements ResourceModelSource {
 
    public synchronized INodeSet getNodes() throws ResourceModelSourceException {
 
-        logger.debug("entering XMLResourceModelSource.getNodes()");
+        logger.debug("entering ResourceModelSourceProvider.getNodes()");
 
       InputStream is = null;
       INodeSet iNodeSet = null;
@@ -54,7 +54,7 @@ public class XMLResourceModelSource implements ResourceModelSource {
          throw new ResourceModelSourceException(e);
       }
 
-        logger.debug("leaving XMLResourceModelSource.getNodes()");
+        logger.debug("leaving ResourceModelSourceProvider.getNodes()");
       return iNodeSet;
    }
 

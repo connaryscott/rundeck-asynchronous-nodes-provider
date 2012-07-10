@@ -43,16 +43,16 @@ public class AsynchronousResourceModelSourceFactory implements ResourceModelSour
     public ResourceModelSource createResourceModelSource(final Properties properties) throws ConfigurationException {
         if (null == singleton) {
         logger.debug("constructing factory singleton");
-        XMLResourceModelSource xmlResourceModelSource = null;
+        ResourceModelSourceProvider resourceModelSourceProvider = null;
         try {
-           xmlResourceModelSource = new XMLResourceModelSource(this.framework, properties);
+           resourceModelSourceProvider = new ResourceModelSourceProvider(this.framework, properties);
         } catch (UnsupportedFormatException e) {
            logger.error("caught UnsupportedFormatException exception: " +  e.getMessage());
            throw new ConfigurationException(e);
         }
-        xmlResourceModelSource.validate();
-        this.singleton = xmlResourceModelSource;
-        return xmlResourceModelSource;
+        resourceModelSourceProvider.validate();
+        this.singleton = resourceModelSourceProvider;
+        return resourceModelSourceProvider;
         } else {
            logger.debug("factory singleton already exists");
            return this.singleton;
