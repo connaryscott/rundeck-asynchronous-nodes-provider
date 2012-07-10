@@ -62,7 +62,7 @@ public class AsynchronousResourceModelSourceFactory implements ResourceModelSour
 
     static {
 
-        List<String> resourceFormats = new ArrayList();
+        List<String> resourceFormats = new ArrayList<String>();
         resourceFormats.add(RESOURCES_FORMAT_XML);
         resourceFormats.add(RESOURCES_FORMAT_YML);
 
