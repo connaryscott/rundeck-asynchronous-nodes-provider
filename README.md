@@ -12,14 +12,20 @@ To Build:
 
 Creates the  dist/asynchronous-url-nodes-provider-<VERSION>.jar 
 
-To Install the Rundeck Plugin 
+To Download:
 =====
+
+Download a release from [build.rundeck.org](http://build.rundeck.org/view/plugins/job/rundeck-asynchronous-nodes-provider-master/lastSuccessfulBuild/artifact/dist/)
+
+To Install the Rundeck Plugin:
+=====
+
 
 copy dist/asynchronous-url-nodes-provider-<VERSION>.jar to the Rundeck Server Extension Directory (such as /var/lib/rundeck/libext)
 
 and restart Rundeck.
 
-To Configure the Rundeck Plugin 
+To Configure the Rundeck Plugin:
 =====
 
 [Add the Resources Provider](https://github.com/connaryscott/rundeck-asynchronous-nodes-provider/blob/master/doc/addAsynchronousResourcesProvider.jpg)
