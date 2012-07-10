@@ -2,7 +2,8 @@ rundeck-asynchronous-nodes-provider
 ========================
 
 A generic resource model source provider with caching capability
-NOTE:  this current implementation only supports xml backend (yaml not yet supported).
+
+*NOTE*:  this current implementation only supports xml backend (yaml not yet supported).
 
 To Build:
 =====
