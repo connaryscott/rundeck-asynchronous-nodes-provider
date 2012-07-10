@@ -34,14 +34,12 @@ public class AsynchronousResourceModelSourceFactory implements ResourceModelSour
 
     public ResourceModelSource createResourceModelSource(final Properties properties) throws ConfigurationException {
         if (null == singleton) {
-        Util.logit("constructing factory singleton");
         logger.debug("constructing factory singleton");
         final XMLResourceModelSource xmlResourceModelSource = new XMLResourceModelSource(properties);
         xmlResourceModelSource.validate();
         this.singleton = xmlResourceModelSource;
         return xmlResourceModelSource;
         } else {
-           Util.logit("factory singleton already exists");
            logger.debug("factory singleton already exists");
            return this.singleton;
         }

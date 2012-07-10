@@ -26,14 +26,11 @@ public class AsynchronousWorker {
 
     public void initialize() {
         if (initialized == true) {
-           Util.logit("initialized is true, immediately returning");
            logger.debug("initialized is true, immediately returning");
            return;
         }
-        Util.logit("initialized is false, continuing");
         logger.debug("initialized is false, continuing");
  
-        Util.logit("Start Work"  + new java.util.Date());
         logger.debug("Start Work"  + new java.util.Date());
         ExecutorService es = Executors.newFixedThreadPool(1);
 
@@ -42,29 +39,24 @@ public class AsynchronousWorker {
         worker = new UrlWorker(this.resourcesUrl, this.refreshInterval);
         Future<String> future = es.submit(worker);
 
-        Util.logit("future done ?: " + future.isDone()); 
         logger.debug("future done ?: " + future.isDone()); 
 
         // first time we wait until data refresh has occurs
         synchronized (worker) {
-           Util.logit("worker refreshed ?: " + worker.isDataRefreshed()); 
            logger.debug("worker refreshed ?: " + worker.isDataRefreshed()); 
            while (!worker.isDataRefreshed()) {
               try {
-                Util.logit("wait() worker refresh 2 ?: " + worker.isDataRefreshed()); 
                 logger.debug("wait() worker refresh 2 ?: " + worker.isDataRefreshed()); 
                 worker.wait();
               } catch (InterruptedException e) { 
                 e.printStackTrace();
                 logger.error("caught InterruptedException"); 
               } finally {
-                Util.logit("wait() refresh 3 ?: " + worker.isDataRefreshed()); 
                 logger.debug("wait() refresh 3 ?: " + worker.isDataRefreshed()); 
               }
            }
         }
         initialized = true;
-        Util.logit("initialization complete, leaving");
         logger.debug("initialization complete, leaving");
 
     }

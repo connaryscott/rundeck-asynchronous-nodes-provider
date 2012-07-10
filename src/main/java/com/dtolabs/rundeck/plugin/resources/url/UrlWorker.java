@@ -15,7 +15,6 @@ public class UrlWorker  implements Callable<String> {
 
     public String call() throws Exception {
        //System.out.println("url: " + this.resourcesUrl);
-       Util.logit("resourcesUrl: " + this.resourcesUrl);
        logger.debug("resourcesUrl: " + this.resourcesUrl);
        this.doWork();
        return resourcesXml;
@@ -108,7 +107,6 @@ public class UrlWorker  implements Callable<String> {
 
           while (true) {
 
-             Util.logit("polling resourcesUrl: " + this.resourcesUrl);
              logger.debug("polling resourcesUrl: " + this.resourcesUrl);
              // reset referesh to false and do not notify calling thread 
              setDataRefreshed(false, false);
@@ -119,7 +117,6 @@ public class UrlWorker  implements Callable<String> {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
-                Util.logit("reading new data");
                 logger.debug("reading new data");
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
       
@@ -137,12 +134,10 @@ public class UrlWorker  implements Callable<String> {
    
              // set resourcesXml string, referesh to true, and notify calling thread 
              setResourcesXml(sb.toString());
-                Util.logit("refresh done");
                 logger.debug("refresh done");
              setDataRefreshed(true, true);
        
              // polling loop wait time
-             Util.logit("sleeping for " + this.refreshInterval + " + seconds");
              logger.debug("sleeping for " + this.refreshInterval + " + seconds");
              try {
                 Thread.sleep(this.refreshInterval*1000);
